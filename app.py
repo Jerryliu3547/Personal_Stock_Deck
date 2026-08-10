@@ -7,8 +7,19 @@ import streamlit as st
 st.set_page_config(layout="wide")
 
 # === 1. Load Price Data ===
-stock_list = ['GLD', 'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'SPY', 'QQQ']
-symbol = st.selectbox("Select a Stock/ETF", stock_list)
+# Expanded list of common stocks and ETFs
+stock_list = [
+    'AAPL', 'MSFT', 'GOOGL', 'AMZN', 'TSLA', 'META', 'NVDA', 'NFLX', 'BRK-B', 'V', 'JNJ', 'WMT', 'JPM', 'PG', 'MA',
+    'HD', 'CVX', 'LLY', 'BAC', 'PFE', 'KO', 'PEP', 'COST', 'TMO', 'AVGO', 'DIS', 'CSCO', 'ABT', 'ORCL', 'CRM',
+    'SPY', 'QQQ', 'DIA', 'IWM', 'VTI', 'VOO', 'ARKK', 'GLD', 'SLV', 'USO'
+]
+col1, col2 = st.columns(2)
+with col1:
+    dropdown_symbol = st.selectbox("Select a Stock/ETF", stock_list, index=stock_list.index('GLD'))
+with col2:
+    custom_symbol = st.text_input("Or enter a custom ticker (overrides dropdown)", "").strip().upper()
+
+symbol = custom_symbol if custom_symbol else dropdown_symbol
 
 st.title(f"📈 {symbol} Price Analysis with Bollinger Bands & MACD")
 
