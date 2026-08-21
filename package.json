@@ -1,0 +1,11 @@
+{
+  "name": "personal-stock-deck",
+  "version": "1.0.0",
+  "description": "Personal Stock Deck Next.js + Python FastAPI",
+  "scripts": {
+    "dev": "npm --prefix frontend run dev",
+    "build": "npm --prefix frontend run build",
+    "start": "npm --prefix frontend run start",
+    "backend": "python -m uvicorn backend.main:app --port 8000 --reload"
+  }
+}
