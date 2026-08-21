@@ -61,7 +61,7 @@ export default function Dashboard() {
             <div className="flex-1 text-sm">
               <span className="font-bold">Error fetching data for &quot;{symbol}&quot;:</span> {error}
               <div className="mt-1 text-xs text-rose-300">
-                Please make sure the Python FastAPI backend server is running (`uvicorn backend.main:app --port 8000`).
+                Please make sure the Python FastAPI backend server is running and accessible (check NEXT_PUBLIC_API_URL or CORS settings).
               </div>
             </div>
             <button

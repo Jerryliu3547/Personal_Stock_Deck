@@ -1,7 +1,19 @@
 import { StockApiResponse } from './types';
 
-// Default to relative endpoint if in browser, fallback to localhost:8000
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || (typeof window !== 'undefined' ? '' : 'http://localhost:8000');
+function getApiBaseUrl(): string {
+  const envUrl = process.env.NEXT_PUBLIC_API_URL;
+  if (!envUrl) {
+    return typeof window !== 'undefined' ? '' : 'http://localhost:8000';
+  }
+  let formattedUrl = envUrl.trim();
+  if (!formattedUrl.startsWith('http://') && !formattedUrl.startsWith('https://')) {
+    formattedUrl = `https://${formattedUrl}`;
+  }
+  return formattedUrl.replace(/\/$/, '');
+}
+
+const API_BASE_URL = getApiBaseUrl();
+
 
 export async function fetchStockData(
   symbol: string,
