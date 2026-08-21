@@ -1,0 +1,30 @@
+# Render Infrastructure as Code (Blueprint)
+services:
+  # 1. FastAPI Python Backend Service
+  - type: web
+    name: stock-deck-backend
+    env: python
+    region: oregon
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "gunicorn backend.main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.8
+
+  # 2. Next.js Frontend Service
+  - type: web
+    name: stock-deck-frontend
+    env: node
+    region: oregon
+    plan: free
+    buildCommand: "cd frontend && npm install && npm run build"
+    startCommand: "cd frontend && npm start"
+    envVars:
+      - key: NODE_VERSION
+        value: 20.11.0
+      - key: NEXT_PUBLIC_API_URL
+        fromService:
+          type: web
+          name: stock-deck-backend
+          property: host
