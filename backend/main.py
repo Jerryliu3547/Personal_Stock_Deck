@@ -4,10 +4,12 @@ from typing import Optional
 import uvicorn
 
 from backend.calc import calculate_stock_indicators
+from backend.macro import calculate_macro_analytics
+from backend.mega7 import calculate_mega7_analytics
 
 app = FastAPI(
     title="Personal Stock Deck API",
-    description="Python backend providing technical indicator analytics (MACD, Bollinger Bands, Buy/Sell Signals)",
+    description="Python backend providing technical indicator analytics (MACD, Bollinger Bands), Macro, and Mega7 Debt & Cash Analytics",
     version="1.0.0"
 )
 
@@ -38,5 +40,26 @@ def get_stock_analytics(
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Error calculating indicators: {str(e)}")
 
+@app.get("/api/macro")
+def get_macro_analytics(
+    start_date: str = Query("2022-01-01", description="Start date in YYYY-MM-DD format"),
+    end_date: Optional[str] = Query(None, description="End date in YYYY-MM-DD format (optional)")
+):
+    try:
+        data = calculate_macro_analytics(start_date=start_date, end_date=end_date)
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error calculating macro analytics: {str(e)}")
+
+@app.get("/api/mega7")
+def get_mega7_analytics():
+    try:
+        data = calculate_mega7_analytics()
+        return data
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Error calculating Mega7 analytics: {str(e)}")
+
 if __name__ == "__main__":
     uvicorn.run("backend.main:app", host="0.0.0.0", port=8000, reload=True)
+
+
